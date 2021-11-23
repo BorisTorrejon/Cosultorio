@@ -20,7 +20,8 @@ switch($_SERVER['REQUEST_METHOD']){
         $turn->putTurn($_GET['id']);
     break;
     case "DELETE":
-        Turns::deleteTurn($_GET['id']);
+        $turns = new Turns("");
+        $turns->deleteTurn($_GET['id']);
     break;
 }
 ?>

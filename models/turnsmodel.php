@@ -89,8 +89,17 @@ class Turns extends Model{
             return false;
         }  
     }
-    public static function deleteTurn($id){
-        echo "turno ".$id." eliminado!";
+    public function deleteTurn($id){
+        try {
+            $sql = "DELETE FROM TURNS 
+                    WHERE 
+                        turnID = ".$id; 
+            $query = $this->db->connect()->prepare($sql);
+            $query->execute();
+            return true;
+        } catch (PDOException) {
+            return false;
+        } 
     }
 }
 ?>
