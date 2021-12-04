@@ -2,16 +2,18 @@
 include_once('../lib/model.php');
 include_once('../models/turn.php');
 class Turns extends Model{
-    private $turnDentist;
-    private $turnShift;  
+    private $turnDoctor;
     private $turnPatient;
+    private $turnDate;
+    private $turnShift;  
     public function __construct($turn)
     {
         parent::__construct();
         if($turn<>""){
-            $this->turnDentist  = $turn["dentist"];
+            $this->turnDoctor   = $turn["doctor"];
+            $this->turnPatient  = $turn['patient'];
+            $this->turnDate     = $turn['date'];            
             $this->turnShift    = $turn['shift'];
-            $this->turnPatient  = $turn['patient'];            
         }
     }
     public function getTurns(){
@@ -23,10 +25,11 @@ class Turns extends Model{
             while($row = $query->fetch()){
                 
                 $turn = new TurnM;
-                $turn->Id       = $row["turnID"];
-                $turn->Dentist  = $row["turnDentist"];
-                $turn->Shift    = $row["turnShift"];
-                $turn->Patient  = $row["turnPatient"];
+                $turn->id       = $row["turnID"];
+                $turn->doctor   = $row["turnDoctor"];
+                $turn->patient  = $row["turnPatient"];
+                $turn->date     = $row["turnDate"];
+                $turn->shift    = $row["turnShift"];
                 array_push ($turns,$turn);
             }
             echo json_encode($turns);
@@ -42,13 +45,14 @@ class Turns extends Model{
             $row = $query->fetch();
             if ($row<>false){
                 $turn = new TurnM;
-                $turn->Id       = $row["turnID"];
-                $turn->Dentist  = $row["turnDentist"];
-                $turn->Shift    = $row["turnShift"];
-                $turn->Patient  = $row["turnPatient"];
+                $turn->id       = $row["turnID"];
+                $turn->doctor   = $row["turnDoctor"];
+                $turn->patient  = $row["turnPatient"];
+                $turn->date     = $row["turnDate"];
+                $turn->shift    = $row["turnShift"];
             }
             else{
-                $turn = "No existe ID";
+                $turn = "No existe ID = ".$id;
             }
             echo json_encode($turn);
         } catch (PDOException $e) {
@@ -59,14 +63,15 @@ class Turns extends Model{
         try {
             $query = $this->db->connect()->prepare(
                 'INSERT INTO TURNS
-                (turnDentist,turnShift,turnPatient)
+                (turnDoctor,turnPatient,turnDate,turnShift)
                 VALUES
-                (:dentist,:shift,:patient)'
+                (:doctor,:patient,:date,:shift)'
             );
             $query->execute([
-                'dentist' => $this->turnDentist,
-                'shift'   => $this->turnShift,
-                'patient' => $this->turnPatient
+                'doctor' => $this->turnDoctor,
+                'patient'=> $this->turnPatient,
+                'date'   => $this->turnDate, 
+                'shift'  => $this->turnShift
             ]);
             return true;
         } catch (PDOException) {
@@ -77,9 +82,10 @@ class Turns extends Model{
         try {
             $sql = "UPDATE TURNS 
                     SET 
-                        turnDentist = '".$this->turnDentist."',
-                        turnShift = '".$this->turnShift."',
-                        turnPatient = '".$this->turnPatient."'
+                        turnDoctor  = '".$this->turnDoctor."',
+                        turnPatient = '".$this->turnPatient."',
+                        turnDate    = '".$this->turnDate."',
+                        turnShift   = '".$this->turnShift."'
                     WHERE 
                         turnID = ".$id; 
             $query = $this->db->connect()->prepare($sql);
