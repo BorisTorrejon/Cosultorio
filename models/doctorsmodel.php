@@ -13,7 +13,7 @@ class Doctors extends Model{
         parent::__construct();
         if($doctor<>""){
             $this->doctorName = $doctor['name'];
-            $this->doctorSurame = $doctor['surname'];
+            $this->doctorSurname = $doctor['surname'];
             $this->doctorPhone = $doctor['phone'];
             $this->doctorCredential = $doctor['credential'];
             $this->doctorEmail = $doctor['email'];
