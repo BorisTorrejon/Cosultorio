@@ -24,7 +24,7 @@ class Doctors extends Model{
         $doctors = [];
         try {
             $query = $this->db->connect()->query(
-                'SELECT * FROM DOCTORS;'
+                'SELECT * FROM doctors;'
             );
             while($row = $query->fetch()){
                 $doctor = new DoctorM;
@@ -45,7 +45,7 @@ class Doctors extends Model{
     public function getDoctor($id){
         try {
             $query = $this->db->connect()->query(
-                'SELECT * FROM DOCTORS WHERE doctorID='.$id
+                'SELECT * FROM doctors WHERE doctorID='.$id
             );
             $row = $query->fetch();
             if($row<>false){
@@ -68,7 +68,7 @@ class Doctors extends Model{
     public function postDoctor(){
         try {
             $query = $this->db->connect()->prepare(
-                'INSERT INTO DOCTORS
+                'INSERT INTO doctors
                 (doctorName,doctorSurname,doctorPhone,doctorCredential,doctorEmail,doctorPassword)
                 VALUES
                 (:name,:surname,:phone,:credential,:email,:password)'
@@ -89,7 +89,7 @@ class Doctors extends Model{
     public function putDoctor($id){
         try {
             $query = $this->db->connect()->prepare(
-                "UPDATE DOCTORS
+                "UPDATE doctors
                 SET
                     doctorName       = '".$this->doctorName."',
                     doctorSurname    = '".$this->doctorSurname."',
@@ -109,7 +109,7 @@ class Doctors extends Model{
     public function deleteDoctor($id){
         try {
             $query = $this->db->connect()->prepare(
-                'DELETE FROM DOCTORS
+                'DELETE FROM doctors
                 WHERE doctorID = '.$id
             );
             $query->execute();

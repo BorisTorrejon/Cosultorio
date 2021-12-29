@@ -1,44 +1,44 @@
 <?php 
 include_once('../lib/model.php');  
-include_once('../config/config.php');
+
 
 class Patient extends Model
 {
-	
-	private $patientID;
-	private $patientName;
-	private $patientSurname;
-	private $patientAge;
-	private $patientPhone;
-	private $patientEmail;
-	private $patientPassword;
-	
+    
+    private $patientID;
+    private $patientName;
+    private $patientSurname;
+    private $patientAge;
+    private $patientPhone;
+    private $patientEmail;
+    private $patientPassword;
+    
 
 
-	public function __construct($patient)//$_POST
-	{
-		parent::__construct(); //connection
-		
-		if($patient<>""){
+    public function __construct($patient)//$_POST
+    {
+        parent::__construct(); //connection
+        
+        if($patient<>""){
 
-		$this->$patientName = $patient['name'];
-		$this->$patientSurname = $patient['surname'];
-		$this->$patientAge = $patient['age'];
-		$this->$patientPhone = $patient['phone'];
-		$this->$patientEmail = $patient['email'];
-		$this->$patientPassword = $patient['password']; 
-		}
-	}// end __construct
+        $this->$patientName = $patient['name'];
+        $this->$patientSurname = $patient['surname'];
+        $this->$patientAge = $patient['age'];
+        $this->$patientPhone = $patient['phone'];
+        $this->$patientEmail = $patient['email'];
+        $this->$patientPassword = $patient['password']; 
+        }
+    }// end __construct
 
 
-	public function getPatients(){
+    public function getPatients(){
         $patients = array();
         try {
             $query = $this->db->connect()->query(
                 'SELECT * FROM patients' 
             );
             while($row = $query->fetch(PDO::FETCH_ASSOC)){
-               		
+                    
                 $patients[]=$row; 
             }
             
@@ -53,7 +53,7 @@ class Patient extends Model
 
     public function getPatient($id){
 
-    	 $patient = array();
+         $patient = array();
         try {
 
 
@@ -62,7 +62,7 @@ class Patient extends Model
             );
 
             while($row = $query->fetch(PDO::FETCH_ASSOC)){
-               		
+                    
                array_push($patient, $row); 
             }
             
@@ -71,13 +71,13 @@ class Patient extends Model
         }
 
      $EmptyTestArray = array_filter($patient);
-	 empty($EmptyTestArray)?array_push($patient, "There is no patient with ID = " . $id) : "" ;
-		  
-		
+     empty($EmptyTestArray)?array_push($patient, "There is no patient with ID = " . $id) : "" ;
+          
+        
 
-	 $json = json_encode($patient);
+     $json = json_encode($patient);
 
-	 echo  $json ;
+     echo  $json ;
         
 
 
@@ -85,10 +85,10 @@ class Patient extends Model
 
         public function postPatient($arr){
 
-      	 try {
+         try {
             $query = $this->db->connect()->prepare(
                 'INSERT INTO patients(
-      			patientName,
+                patientName,
                 patientSurname,
                 patientAge,
                 patientPhone,
@@ -111,11 +111,11 @@ class Patient extends Model
 
 
 
-		}//end function
+        }//end function
 
-		 public function putPatient($arr,$id){
-		  	
-      	 try {
+         public function putPatient($arr,$id){
+            
+         try {
             $query = $this->db->connect()->prepare(
                 "UPDATE patients SET
                 patientName =   '  ".$arr['name']." ' ,
@@ -132,11 +132,11 @@ class Patient extends Model
         } catch (PDOException $e) {
             echo $e;   
         } 
-		}//end function
+        }//end function
 
 
-		 public function deletePatient($id){
-       		 try {
+         public function deletePatient($id){
+             try {
             $query = $this->db->connect()->prepare(
                 'DELETE FROM patients
                 WHERE patientID = '.$id
@@ -155,3 +155,4 @@ class Patient extends Model
 
 
  ?>
+

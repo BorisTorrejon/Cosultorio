@@ -20,7 +20,7 @@ class Turns extends Model{
         $turns = [];
         try {
             $query = $this->db->connect()->query(
-                'SELECT * FROM TURNS;'
+                'SELECT * FROM turns;'
             );
             while($row = $query->fetch()){
                 
@@ -35,12 +35,12 @@ class Turns extends Model{
             echo json_encode($turns);
         } catch (PDOException $e) {
             echo $e;
-        }
+        } 
     }
     public function getTurn($id){
         try {
             $query = $this->db->connect()->query(
-                'SELECT * FROM TURNS WHERE turnID='.$id
+                'SELECT * FROM turns WHERE turnID='.$id
             );
             $row = $query->fetch();
             if ($row<>false){
@@ -60,9 +60,9 @@ class Turns extends Model{
         }
     }
     public function postTurn(){
-        try {
+       
             $query = $this->db->connect()->prepare(
-                'INSERT INTO TURNS
+                'INSERT INTO turns
                 (turnDoctor,turnPatient,turnDate,turnShift)
                 VALUES
                 (:doctor,:patient,:date,:shift)'
@@ -73,14 +73,11 @@ class Turns extends Model{
                 'date'   => $this->turnDate, 
                 'shift'  => $this->turnShift
             ]);
-            return true;
-        } catch (PDOException) {
-            return false;
-        }
+        
     }
     public function putTurn($id){
-        try {
-            $sql = "UPDATE TURNS 
+      
+            $sql = "UPDATE turns
                     SET 
                         turnDoctor  = '".$this->turnDoctor."',
                         turnPatient = '".$this->turnPatient."',
@@ -91,21 +88,17 @@ class Turns extends Model{
             $query = $this->db->connect()->prepare($sql);
             $query->execute();
             return true;
-        } catch (PDOException) {
-            return false;
-        }  
+        
     }
     public function deleteTurn($id){
-        try {
-            $sql = "DELETE FROM TURNS 
+      
+            $sql = "DELETE FROM turns  
                     WHERE 
                         turnID = ".$id; 
             $query = $this->db->connect()->prepare($sql);
             $query->execute();
             return true;
-        } catch (PDOException) {
-            return false;
-        } 
+        
     }
 }
 ?>
